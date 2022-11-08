@@ -19,7 +19,7 @@ public class TicketManager {
     
     public boolean insertTicket(Ticket ticket, String sponsor, String location) {
         boolean success = false;
-        if (dbManager.getTicketID(sponsor, location) > 0) {
+        if (dbManager.getTicketID(sponsor, location) == -1) {
             dbManager.insertTicket(ticket);
             success = true;
         }
@@ -33,6 +33,10 @@ public class TicketManager {
     
     public String[] getSponsors() {
         return dbManager.getSponsors();
+    }
+    
+    public int getTicketAmount(String location) {
+        return dbManager.getTicketAmount(location);
     }
     
     
