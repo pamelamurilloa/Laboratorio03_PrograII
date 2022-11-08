@@ -2,28 +2,17 @@ package Objects;
 
 
 public class Ticket {
-    private int ticketID;
     private int locationID;
     private int sponsorID;
     private int price;
     private int amountStock;
 
-    public Ticket(int ticketID, int locationID, int sponsorID, int price, int amountStock) {
-        this.ticketID = ticketID;
+    public Ticket(int locationID, int sponsorID, int price, int amountStock) {
         this.locationID = locationID;
         this.sponsorID = sponsorID;
         this.price = price;
         this.amountStock = amountStock;
     }
-
-    public int getTicketID() {
-        return ticketID;
-    }
-
-    public void setTicketID(int ticketID) {
-        this.ticketID = ticketID;
-    }
-
     public int getLocationID() {
         return locationID;
     }
