@@ -1,23 +1,33 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package UserInterfaces;
 
-/**
- *
- * @author pamelamurillo
- */
+import Bussiness.UserManager;
+import java.util.HashMap;
+import javax.swing.table.DefaultTableModel;
+
+
 public class Report1 extends javax.swing.JDialog {
 
-    /**
-     * Creates new form Report1
-     */
+    UserManager userManager = new UserManager();
+
     public Report1(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         setResizable(false);
+        
+        fillTable();
+    }
+    
+    public void fillTable() {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+        HashMap reporte = userManager.getGenderCount();
+        Object[] fill = new Object[4];
+        for (Object key : reporte.keySet() ) {
+            fill[0] = key;
+            fill[1] = reporte.get(key);
+            model.addRow(fill);
+        }
     }
 
     /**
@@ -29,11 +39,175 @@ public class Report1 extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel4 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        table = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        menuBar = new javax.swing.JMenuBar();
+        Start = new javax.swing.JMenu();
+        menuGetTicket = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        menuReport1 = new javax.swing.JMenuItem();
+        menuReport2 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        menuCRUDuser = new javax.swing.JMenuItem();
+        menuCRUDticket = new javax.swing.JMenuItem();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel4.setBackground(new java.awt.Color(0, 148, 148));
+        jPanel4.setForeground(new java.awt.Color(0, 51, 51));
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel2.setFont(new java.awt.Font("Impact", 1, 48)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(245, 245, 245));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("TICKET");
+        jPanel4.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 0, 150, 60));
+
+        jLabel4.setFont(new java.awt.Font("Hiragino Mincho ProN", 1, 24)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(245, 245, 245));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("now");
+        jPanel4.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 20, 50, 30));
+
+        jLabel5.setFont(new java.awt.Font("Hiragino Mincho ProN", 1, 24)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(245, 245, 245));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("my");
+        jPanel4.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 50, 30));
+
+        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 60));
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel3.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 900, 10));
+
+        jPanel1.setBackground(new java.awt.Color(240, 240, 240));
+        jPanel1.setForeground(new java.awt.Color(240, 240, 240));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel7.setFont(new java.awt.Font("Hiragino Mincho ProN", 1, 24)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("Reporte 1");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 220, 30));
+
+        jPanel3.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 80));
+
+        table.setBackground(new java.awt.Color(240, 240, 240));
+        table.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
+        table.setForeground(new java.awt.Color(0, 0, 0));
+        table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Género", "Cantidad de entradas compradas"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(table);
+
+        jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 130, 450, 200));
+
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 900, 460));
+
+        jPanel2.setBackground(new java.awt.Color(0, 181, 181));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Kefa", 0, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel1.setText("Pamela Murillo Anchia");
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 10, 160, 40));
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 520, 900, 60));
+
+        Start.setText("Inicio");
+
+        menuGetTicket.setText("Comprar entradas");
+        Start.add(menuGetTicket);
+
+        menuBar.add(Start);
+
+        jMenu1.setText("Reportes");
+
+        menuReport1.setText("Reporte 1");
+        menuReport1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuReport1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuReport1);
+
+        menuReport2.setText("Reporte 2");
+        jMenu1.add(menuReport2);
+
+        menuBar.add(jMenu1);
+
+        jMenu2.setText("CRUD");
+
+        menuCRUDuser.setText("De Usuarios");
+        menuCRUDuser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCRUDuserActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuCRUDuser);
+
+        menuCRUDticket.setText("De Boletos");
+        menuCRUDticket.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCRUDticketActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuCRUDticket);
+
+        menuBar.add(jMenu2);
+
+        setJMenuBar(menuBar);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void menuReport1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuReport1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuReport1ActionPerformed
+
+    private void menuCRUDuserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCRUDuserActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuCRUDuserActionPerformed
+
+    private void menuCRUDticketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCRUDticketActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuCRUDticketActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +252,26 @@ public class Report1 extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu Start;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenuItem menuCRUDticket;
+    private javax.swing.JMenuItem menuCRUDuser;
+    private javax.swing.JMenuItem menuGetTicket;
+    private javax.swing.JMenuItem menuReport1;
+    private javax.swing.JMenuItem menuReport2;
+    private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 }

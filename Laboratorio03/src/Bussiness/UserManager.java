@@ -3,6 +3,7 @@ package Bussiness;
 import Data.DBManager;
 import Objects.User;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class UserManager {
@@ -28,4 +29,8 @@ public class UserManager {
     public ArrayList<String> getUserList() {
         return dbManager.getUserIDs();
     }
-}
+    
+    public HashMap getGenderCount() {
+        return dbManager.getReport1();
+    }
+ }

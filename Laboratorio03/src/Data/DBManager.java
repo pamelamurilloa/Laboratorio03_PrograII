@@ -139,7 +139,7 @@ public class DBManager {
     }
     
      // REPORTS //
-    public HashMap getReport1 (char gender) {
+    public HashMap getReport1 () {
         HashMap count = new HashMap();
         try {
             connection = conexion.conexion();
