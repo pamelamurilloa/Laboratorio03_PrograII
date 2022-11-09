@@ -25,9 +25,12 @@ public class DBManager {
         try {
             connection = conexion.conexion();
             s = connection.createStatement();
-            rs = s.executeQuery("SELECT Count(1) cantidad from usuarios u where u.id_usuario = '" + userID + "';");
+            rs = s.executeQuery("SELECT Count(1) AS cantidad from usuarios u where u.id_usuario = '" + userID + "';");
             while (rs.next()) {
-                exist = true;
+                if (rs.getInt("cantidad") > 0) {
+                    exist = true;
+                }
+                
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -275,7 +278,7 @@ public class DBManager {
                     + "('" + invoice.getTicketID() + "', "
                     + "'" + invoice.getUserID() + "', "
                     + "'" + invoice.getQuantity() + "', "
-                    + "'" + invoice.getTotal() + "';");
+                    + "'" + invoice.getTotal() + "');");
             
             if (userInserted == 0) {
                 System.out.println("Error al insertar factura");

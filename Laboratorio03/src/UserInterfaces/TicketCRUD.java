@@ -22,6 +22,7 @@ public class TicketCRUD extends javax.swing.JDialog {
         setResizable(false);
         
         initialSetUp();
+        inputPrice.setText("");
         restart();
     }
     
@@ -37,7 +38,6 @@ public class TicketCRUD extends javax.swing.JDialog {
     }
     
     private void restart() {
-        inputPrice.setText("");
         lblError.setVisible(false);
         lblSuccess.setVisible(false);
     }
@@ -86,13 +86,6 @@ public class TicketCRUD extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         Start = new javax.swing.JMenu();
-        menuGetTicket = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
-        menuReport1 = new javax.swing.JMenuItem();
-        menuReport2 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        menuCRUDuser = new javax.swing.JMenuItem();
-        menuCRUDticket = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -183,8 +176,18 @@ public class TicketCRUD extends javax.swing.JDialog {
         jLabel12.setText("Patrocinador:");
         jPanel3.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 130, 30));
 
+        comboSponsor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                comboSponsorMousePressed(evt);
+            }
+        });
         jPanel3.add(comboSponsor, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 210, 210, 40));
 
+        comboLocation.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                comboLocationMousePressed(evt);
+            }
+        });
         jPanel3.add(comboLocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 120, 210, 40));
 
         inputPrice.setBackground(new java.awt.Color(240, 240, 240));
@@ -216,81 +219,17 @@ public class TicketCRUD extends javax.swing.JDialog {
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 520, 900, 60));
 
         Start.setText("Inicio");
-
-        menuGetTicket.setText("Comprar entradas");
-        menuGetTicket.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuGetTicketActionPerformed(evt);
+        Start.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                StartMouseClicked(evt);
             }
         });
-        Start.add(menuGetTicket);
-
         menuBar.add(Start);
-
-        jMenu1.setText("Reportes");
-
-        menuReport1.setText("Reporte 1");
-        menuReport1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuReport1ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(menuReport1);
-
-        menuReport2.setText("Reporte 2");
-        menuReport2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuReport2ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(menuReport2);
-
-        menuBar.add(jMenu1);
-
-        jMenu2.setText("CRUD");
-
-        menuCRUDuser.setText("De Usuarios");
-        menuCRUDuser.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuCRUDuserActionPerformed(evt);
-            }
-        });
-        jMenu2.add(menuCRUDuser);
-
-        menuCRUDticket.setText("De Boletos");
-        menuCRUDticket.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuCRUDticketActionPerformed(evt);
-            }
-        });
-        jMenu2.add(menuCRUDticket);
-
-        menuBar.add(jMenu2);
 
         setJMenuBar(menuBar);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void menuGetTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuGetTicketActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_menuGetTicketActionPerformed
-
-    private void menuReport1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuReport1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_menuReport1ActionPerformed
-
-    private void menuReport2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuReport2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_menuReport2ActionPerformed
-
-    private void menuCRUDuserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCRUDuserActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_menuCRUDuserActionPerformed
-
-    private void menuCRUDticketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCRUDticketActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_menuCRUDticketActionPerformed
 
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
         int price = userManager.isNumeric(inputPrice.getText());
@@ -305,6 +244,18 @@ public class TicketCRUD extends javax.swing.JDialog {
     private void inputPriceMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputPriceMousePressed
         restart();
     }//GEN-LAST:event_inputPriceMousePressed
+
+    private void comboLocationMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboLocationMousePressed
+        restart();
+    }//GEN-LAST:event_comboLocationMousePressed
+
+    private void comboSponsorMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboSponsorMousePressed
+        restart();
+    }//GEN-LAST:event_comboSponsorMousePressed
+
+    private void StartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StartMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_StartMouseClicked
 
     /**
      * @param args the command line arguments
@@ -363,8 +314,6 @@ public class TicketCRUD extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -373,11 +322,6 @@ public class TicketCRUD extends javax.swing.JDialog {
     private javax.swing.JLabel lblError;
     private javax.swing.JLabel lblSuccess;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenuItem menuCRUDticket;
-    private javax.swing.JMenuItem menuCRUDuser;
-    private javax.swing.JMenuItem menuGetTicket;
-    private javax.swing.JMenuItem menuReport1;
-    private javax.swing.JMenuItem menuReport2;
     private javax.swing.JSpinner numberTickets;
     // End of variables declaration//GEN-END:variables
 }

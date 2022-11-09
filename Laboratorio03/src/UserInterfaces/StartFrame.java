@@ -101,6 +101,11 @@ public class StartFrame extends javax.swing.JFrame {
         Start.setText("Inicio");
 
         menuGetTicket.setText("Comprar entradas");
+        menuGetTicket.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuGetTicketActionPerformed(evt);
+            }
+        });
         Start.add(menuGetTicket);
 
         menuBar.add(Start);
@@ -116,6 +121,11 @@ public class StartFrame extends javax.swing.JFrame {
         jMenu1.add(menuReport1);
 
         menuReport2.setText("Reporte 2");
+        menuReport2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuReport2ActionPerformed(evt);
+            }
+        });
         jMenu1.add(menuReport2);
 
         menuBar.add(jMenu1);
@@ -146,16 +156,29 @@ public class StartFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void menuReport1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuReport1ActionPerformed
-        // TODO add your handling code here:
+        Report1 newWindow = new Report1(this, true);
+        newWindow.setVisible(true);
     }//GEN-LAST:event_menuReport1ActionPerformed
 
     private void menuCRUDuserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCRUDuserActionPerformed
-        // TODO add your handling code here:
+        UserCRUD newWindow = new UserCRUD(this, true);
+        newWindow.setVisible(true);
     }//GEN-LAST:event_menuCRUDuserActionPerformed
 
     private void menuCRUDticketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCRUDticketActionPerformed
-        // TODO add your handling code here:
+        TicketCRUD newWindow = new TicketCRUD(this, true);
+        newWindow.setVisible(true);
     }//GEN-LAST:event_menuCRUDticketActionPerformed
+
+    private void menuGetTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuGetTicketActionPerformed
+        GetTicket newWindow = new GetTicket(this, true);
+        newWindow.setVisible(true);
+    }//GEN-LAST:event_menuGetTicketActionPerformed
+
+    private void menuReport2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuReport2ActionPerformed
+        Report2 newWindow = new Report2(this, true);
+        newWindow.setVisible(true);
+    }//GEN-LAST:event_menuReport2ActionPerformed
 
     /**
      * @param args the command line arguments

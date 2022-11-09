@@ -78,7 +78,9 @@ public class GetTicket extends javax.swing.JDialog {
     }
     
     private void confirmPurchase(){
-        ticketManager.purchaseTicket(currentTicketID, Integer.parseInt( numberTickets.getModel().getValue().toString() ), currentTicketID, Integer.parseInt(lblTotal.getText()));
+        if (!lblTotal.getText().equals("0.0")) {
+            ticketManager.purchaseTicket(currentTicketID, Integer.parseInt( numberTickets.getModel().getValue().toString() ), Integer.parseInt(comboUsers.getSelectedItem().toString()), Integer.parseInt(lblTotal.getText()));
+        }
     }
 
     /**
@@ -115,13 +117,6 @@ public class GetTicket extends javax.swing.JDialog {
         jLabel14 = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         Start = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -272,67 +267,21 @@ public class GetTicket extends javax.swing.JDialog {
         getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 900, 460));
 
         Start.setText("Inicio");
-
-        jMenuItem3.setText("Comprar entradas");
-        Start.add(jMenuItem3);
-
+        Start.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                StartMouseClicked(evt);
+            }
+        });
         menuBar.add(Start);
-
-        jMenu1.setText("Reportes");
-
-        jMenuItem4.setText("Reporte 1");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem4);
-
-        jMenuItem5.setText("Reporte 2");
-        jMenu1.add(jMenuItem5);
-
-        menuBar.add(jMenu1);
-
-        jMenu2.setText("CRUD");
-
-        jMenuItem1.setText("De Usuarios");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem1);
-
-        jMenuItem2.setText("De Boletos");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem2);
-
-        menuBar.add(jMenu2);
 
         setJMenuBar(menuBar);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
-        restart();
         confirmPurchase();
+        restart();
         
     }//GEN-LAST:event_btnConfirmActionPerformed
 
@@ -351,6 +300,10 @@ public class GetTicket extends javax.swing.JDialog {
     private void btnGetTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetTotalActionPerformed
         updatePrice();
     }//GEN-LAST:event_btnGetTotalActionPerformed
+
+    private void StartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StartMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_StartMouseClicked
 
     /**
      * @param args the command line arguments
@@ -411,13 +364,6 @@ public class GetTicket extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
