@@ -12,6 +12,10 @@ public class GetTicket extends javax.swing.JDialog {
     UserManager userManager = new UserManager();
     TicketManager ticketManager = new TicketManager();
     
+    private String blank = "";
+    private String notEnoughTickets = "No hay suficientes tiquetes";
+    private String noTickets = "No hay tiquetes con estas caracteristicas";
+    
     int currentTicketID = -1;
 
     public GetTicket(java.awt.Frame parent, boolean modal) {
@@ -21,6 +25,7 @@ public class GetTicket extends javax.swing.JDialog {
         setResizable(false);
 
         initialSetUp();
+
         restart();
     }
 
@@ -39,23 +44,37 @@ public class GetTicket extends javax.swing.JDialog {
     }
 
     private void initialSetUp() {
-        lblError.setVisible(false);
+        lblError.setText(blank);
         fillComboBox(comboUsers, userManager.getUserList());
         fillComboBox(comboLocations, makeArray(ticketManager.getLocations()) );
         fillComboBox(comboSponsors, makeArray(ticketManager.getSponsors()) );
     }
 
+    
     private void updatePrice() {
-        int price = ticketManager.getTicketPrice(currentTicketID) * Integer.parseInt( numberTickets.getModel().getValue().toString() );
-        lblTotal.setText(price + "");
+        lblError.setText(blank);
+        int amountTickets = Integer.parseInt( numberTickets.getModel().getValue().toString() );
+        String location = comboLocations.getSelectedItem().toString();
+        String sponsor = comboSponsors.getSelectedItem().toString();
+        currentTicketID = ticketManager.getTicketID(sponsor, location);
+        
+        if (currentTicketID == -1) {
+            lblError.setText(noTickets);
+        } else {
+            if (amountTickets > ticketManager.getTicketAmount(currentTicketID)) {
+                lblError.setText(notEnoughTickets);
+            } else {
+                int price = ticketManager.getTicketPrice(currentTicketID) * amountTickets;
+                lblTotal.setText(price + "");
+                lblError.setText(blank);
+            }
+        }
+        
+        
     }
-
-    private void restart() {
-        lblError.setVisible(false);
-        int tickets = ticketManager.getTicketAmount(currentTicketID);
-        SpinnerModel model = new SpinnerNumberModel(1, 1, tickets, 1);
-        numberTickets.setModel(model);
-        updatePrice();
+    
+    public void restart(){
+        lblTotal.setText("0.0");
     }
     
     private void confirmPurchase(){
@@ -174,7 +193,7 @@ public class GetTicket extends javax.swing.JDialog {
         jPanel3.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 900, 10));
 
         numberTickets.setFont(new java.awt.Font("Hiragino Sans", 0, 18)); // NOI18N
-        numberTickets.setModel(new javax.swing.SpinnerNumberModel(1, null, null, 1));
+        numberTickets.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
         numberTickets.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 numberTicketsStateChanged(evt);
@@ -216,7 +235,7 @@ public class GetTicket extends javax.swing.JDialog {
         lblError.setFont(new java.awt.Font("Hiragino Sans", 1, 18)); // NOI18N
         lblError.setForeground(new java.awt.Color(204, 0, 0));
         lblError.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblError.setText("No existen campos con estas caracteristicas");
+        lblError.setText("No existen boletos con estas caracteristicas");
         jPanel3.add(lblError, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, 410, 30));
 
         jLabel13.setFont(new java.awt.Font("Hiragino Sans", 1, 18)); // NOI18N
@@ -330,17 +349,7 @@ public class GetTicket extends javax.swing.JDialog {
     }//GEN-LAST:event_comboSponsorsItemStateChanged
 
     private void btnGetTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetTotalActionPerformed
-        String location = comboLocations.getSelectedItem().toString();
-        String sponsor = comboSponsors.getSelectedItem().toString();
-        
-        if (ticketManager.getTicketID(sponsor, location) != -1) {
-            currentTicketID = ticketManager.getTicketID(sponsor, location);
-            ticketManager.purchaseTicket(currentTicketID, ABORT);
-            updatePrice();
-        } else {
-            lblError.setVisible(true);
-        }
-
+        updatePrice();
     }//GEN-LAST:event_btnGetTotalActionPerformed
 
     /**

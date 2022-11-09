@@ -225,7 +225,7 @@ public class DBManager {
         try {
             connection = conexion.conexion();
             s = connection.createStatement();
-            s.executeQuery("SELECT id_localidad as local, id_patrocinador as patro, precio as precio, cantidad_stock as cantidad from boletos "
+            rs = s.executeQuery("SELECT id_localidad as local, id_patrocinador as patro, precio as precio, cantidad_stock as cantidad from boletos "
                     + "where id_tipo_boleto = '" + idTicket + "'");
             
             while (rs.next()) {
@@ -243,13 +243,13 @@ public class DBManager {
         try {
             connection = conexion.conexion();
             s = connection.createStatement();
-            s.executeQuery("SELECT b.id_tipo_boleto AS id FROM boletos b " +
+            rs = s.executeQuery("SELECT b.id_tipo_boleto AS id FROM boletos b " +
                                     "left join localidades l " +
                                     "on l.id_localidad = b.id_localidad " +
                                     "left join patrocinadores pa " +
                                     "on pa.id_patrocinador = b.id_patrocinador " +
-                                    "WHERE UPPER(l.nombre) = '" + location + "' " +
-                                    "AND UPPER(pa.nombre) = '" + sponsor + "';");
+                                    "WHERE UPPER(l.nombre) = '" + location.toUpperCase() + "' " +
+                                    "AND UPPER(pa.nombre) = '" + sponsor.toUpperCase() + "';");
             
             while (rs.next()) {
                 ticketID = rs.getInt("id");
