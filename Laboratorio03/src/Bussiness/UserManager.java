@@ -25,7 +25,7 @@ public class UserManager {
             return false;
     }
     
-    public ArrayList getUserList() {
+    public ArrayList<String> getUserList() {
         return dbManager.getUserIDs();
     }
 }

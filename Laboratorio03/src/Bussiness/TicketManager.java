@@ -16,10 +16,10 @@ public class TicketManager {
         boolean success = insertTicket(newTicket, sponsor, location);
         return success;
     }
-    
+
     public boolean insertTicket(Ticket ticket, String sponsor, String location) {
         boolean success = false;
-        if (dbManager.getTicketID(sponsor, location) == -1) {
+        if (getTicketID(sponsor, location) == -1) {
             dbManager.insertTicket(ticket);
             success = true;
         }
@@ -35,8 +35,22 @@ public class TicketManager {
         return dbManager.getSponsors();
     }
     
-    public int getTicketAmount(String location) {
-        return dbManager.getTicketAmount(location);
+    public int getTicketPrice(int id) {
+        Ticket ticket = dbManager.getTicket(id);
+        return ticket.getPrice();
+    }
+    
+    public int getTicketAmount(int id) {
+        Ticket ticket = dbManager.getTicket(id);
+        return ticket.getAmountStock();
+    }
+    
+    public int getTicketID(String sponsor, String location){
+        return dbManager.getTicketID(sponsor, location);
+    }
+    
+    public void purchaseTicket(int id, int amount) {
+        dbManager.updateStockTickets(amount, id);
     }
     
     

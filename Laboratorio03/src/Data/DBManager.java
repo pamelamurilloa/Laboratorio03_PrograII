@@ -24,12 +24,9 @@ public class DBManager {
         try {
             connection = conexion.conexion();
             s = connection.createStatement();
-            int userInserted = s.executeUpdate("SELECT Count(1) cantidad from usuarios u where u.id_usuario = '" + userID + "';");
+            s.executeQuery("SELECT Count(1) cantidad from usuarios u where u.id_usuario = '" + userID + "';");
             while (rs.next()) {
-                if (userInserted > 0) {exist = true;}
-            }
-            if (userInserted == 0) {
-                System.out.println("Error al contar cedulas");
+                exist = true;
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -55,11 +52,11 @@ public class DBManager {
     }
     
     public ArrayList getUserIDs() {
-        ArrayList userList = new ArrayList();
+        ArrayList<String> userList = new ArrayList();
         try {
             connection = conexion.conexion();
             s = connection.createStatement();
-            rs = s.executeQuery("SELECT id_usurio AS id FROM usuarios;");
+            rs = s.executeQuery("SELECT id_usuario AS id FROM usuarios;");
             while (rs.next()) {
                 userList.add(rs.getString("id"));
             }
@@ -223,6 +220,24 @@ public class DBManager {
         }
     }
     
+    public Ticket getTicket(int idTicket) {
+        Ticket newTicket = null;
+        try {
+            connection = conexion.conexion();
+            s = connection.createStatement();
+            s.executeQuery("SELECT id_localidad as local, id_patrocinador as patro, precio as precio, cantidad_stock as cantidad from boletos "
+                    + "where id_tipo_boleto = '" + idTicket + "'");
+            
+            while (rs.next()) {
+                newTicket = new Ticket(rs.getInt("local"), rs.getInt("patro"), rs.getInt("precio"), rs.getInt("cantidad"));
+            }
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return newTicket;
+    }
+    
     public int getTicketID(String sponsor, String location) {
         int ticketID = -1;
         try {
@@ -246,24 +261,6 @@ public class DBManager {
         return ticketID;
     }
     
-    public int getTicketAmount(String location) {
-        int ticketAmount = -1;
-        try {
-            connection = conexion.conexion();
-            s = connection.createStatement();
-            s.executeQuery("SELECT SUM(b.cantidad_stock) AS sum FROM boletos b " +
-                            "LEFT JOIN localidades l " +
-                            "ON l.id_localidad = b.id_localidad " +
-                            "WHERE UPPER(l.nombre) = '" + location + "';");
-            while (rs.next()) {
-                ticketAmount = rs.getInt("sum");
-            }
-            
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        return ticketAmount;
-    }
     
     public static void main(String[] args) {
         DBManager db = new DBManager();

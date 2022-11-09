@@ -1,15 +1,65 @@
 package UserInterfaces;
 
+import Bussiness.TicketManager;
+import Bussiness.UserManager;
+import java.util.ArrayList;
+import javax.swing.JComboBox;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 
 public class GetTicket extends javax.swing.JDialog {
 
+    UserManager userManager = new UserManager();
+    TicketManager ticketManager = new TicketManager();
+    
+    int currentTicketID = -1;
 
     public GetTicket(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         setResizable(false);
-        
+
+        initialSetUp();
+        restart();
+    }
+
+    public void fillComboBox(JComboBox comboToFill, ArrayList<String> filling) {
+        for (String line : filling) {
+            comboToFill.addItem(line);
+        }
+    }
+
+    private ArrayList<String> makeArray(String[] list) {
+        ArrayList<String> locationArray = new ArrayList();
+        for (String line : list) {
+            locationArray.add(line);
+        }
+        return locationArray;
+    }
+
+    private void initialSetUp() {
+        lblError.setVisible(false);
+        fillComboBox(comboUsers, userManager.getUserList());
+        fillComboBox(comboLocations, makeArray(ticketManager.getLocations()) );
+        fillComboBox(comboSponsors, makeArray(ticketManager.getSponsors()) );
+    }
+
+    private void updatePrice() {
+        int price = ticketManager.getTicketPrice(currentTicketID) * Integer.parseInt( numberTickets.getModel().getValue().toString() );
+        lblTotal.setText(price + "");
+    }
+
+    private void restart() {
+        lblError.setVisible(false);
+        int tickets = ticketManager.getTicketAmount(currentTicketID);
+        SpinnerModel model = new SpinnerNumberModel(1, 1, tickets, 1);
+        numberTickets.setModel(model);
+        updatePrice();
+    }
+    
+    private void confirmPurchase(){
+        ticketManager.purchaseTicket(currentTicketID, Integer.parseInt( numberTickets.getModel().getValue().toString() ) );
     }
 
     /**
@@ -28,18 +78,22 @@ public class GetTicket extends javax.swing.JDialog {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        lblTotal = new javax.swing.JLabel();
+        comboLocations = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         numberTickets = new javax.swing.JSpinner();
         jLabel9 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        comboUsers = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jLabel12 = new javax.swing.JLabel();
+        btnConfirm = new javax.swing.JButton();
+        lblError = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        comboSponsors = new javax.swing.JComboBox<>();
+        btnGetTotal = new javax.swing.JButton();
+        jLabel14 = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         Start = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -91,14 +145,20 @@ public class GetTicket extends javax.swing.JDialog {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel6.setFont(new java.awt.Font("Hiragino Sans", 1, 36)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel6.setText("0.000");
-        jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 360, 400, 60));
+        lblTotal.setFont(new java.awt.Font("Hiragino Sans", 1, 36)); // NOI18N
+        lblTotal.setForeground(new java.awt.Color(0, 0, 0));
+        lblTotal.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblTotal.setText("0.000");
+        jPanel3.add(lblTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 360, 400, 60));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel3.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 180, 210, 40));
+        comboLocations.setFont(new java.awt.Font("Hiragino Sans", 0, 18)); // NOI18N
+        comboLocations.setForeground(new java.awt.Color(0, 0, 0));
+        comboLocations.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboLocationsItemStateChanged(evt);
+            }
+        });
+        jPanel3.add(comboLocations, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 180, 210, 40));
 
         jPanel1.setBackground(new java.awt.Color(240, 240, 240));
         jPanel1.setForeground(new java.awt.Color(240, 240, 240));
@@ -112,22 +172,30 @@ public class GetTicket extends javax.swing.JDialog {
 
         jPanel3.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 290, 80));
         jPanel3.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 900, 10));
-        jPanel3.add(numberTickets, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 110, 80, 40));
+
+        numberTickets.setFont(new java.awt.Font("Hiragino Sans", 0, 18)); // NOI18N
+        numberTickets.setModel(new javax.swing.SpinnerNumberModel(1, null, null, 1));
+        numberTickets.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                numberTicketsStateChanged(evt);
+            }
+        });
+        jPanel3.add(numberTickets, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 110, 80, 40));
 
         jLabel9.setFont(new java.awt.Font("Hiragino Sans", 1, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 0, 0));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel9.setText("Entradas a comprar");
-        jPanel3.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 180, 30));
+        jPanel3.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 210, 30));
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel3.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 20, 210, 40));
+        comboUsers.setFont(new java.awt.Font("Hiragino Sans", 0, 18)); // NOI18N
+        jPanel3.add(comboUsers, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 20, 210, 40));
 
         jLabel10.setFont(new java.awt.Font("Hiragino Sans", 1, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(0, 0, 0));
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel10.setText("Localidad:");
-        jPanel3.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 180, 30));
+        jPanel3.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 210, 30));
 
         jLabel11.setFont(new java.awt.Font("Hiragino Sans", 1, 36)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(0, 0, 0));
@@ -135,16 +203,52 @@ public class GetTicket extends javax.swing.JDialog {
         jLabel11.setText("Su Total es:");
         jPanel3.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 230, 60));
 
-        jButton1.setFont(new java.awt.Font("Hiragino Sans", 1, 24)); // NOI18N
-        jButton1.setText("Confirmar");
-        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 360, 170, 60));
+        btnConfirm.setFont(new java.awt.Font("Hiragino Sans", 1, 24)); // NOI18N
+        btnConfirm.setText("Confirmar");
+        btnConfirm.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        btnConfirm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfirmActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnConfirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 360, 170, 60));
 
-        jLabel12.setFont(new java.awt.Font("Hiragino Sans", 1, 18)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel12.setText("Seleccione su numero de cedula:");
-        jPanel3.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 30, 310, 30));
+        lblError.setFont(new java.awt.Font("Hiragino Sans", 1, 18)); // NOI18N
+        lblError.setForeground(new java.awt.Color(204, 0, 0));
+        lblError.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblError.setText("No existen campos con estas caracteristicas");
+        jPanel3.add(lblError, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, 410, 30));
+
+        jLabel13.setFont(new java.awt.Font("Hiragino Sans", 1, 18)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel13.setText("Patrocinador:");
+        jPanel3.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 210, 30));
+
+        comboSponsors.setFont(new java.awt.Font("Hiragino Sans", 0, 18)); // NOI18N
+        comboSponsors.setForeground(new java.awt.Color(0, 0, 0));
+        comboSponsors.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboSponsorsItemStateChanged(evt);
+            }
+        });
+        jPanel3.add(comboSponsors, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 250, 210, 40));
+
+        btnGetTotal.setFont(new java.awt.Font("Hiragino Sans", 1, 24)); // NOI18N
+        btnGetTotal.setText("Mostar Total");
+        btnGetTotal.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        btnGetTotal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGetTotalActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnGetTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 200, 170, 60));
+
+        jLabel14.setFont(new java.awt.Font("Hiragino Sans", 1, 18)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel14.setText("Seleccione su numero de cedula:");
+        jPanel3.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 30, 310, 30));
 
         getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 900, 460));
 
@@ -207,6 +311,38 @@ public class GetTicket extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
+        restart();
+        confirmPurchase();
+        
+    }//GEN-LAST:event_btnConfirmActionPerformed
+
+    private void comboLocationsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboLocationsItemStateChanged
+
+    }//GEN-LAST:event_comboLocationsItemStateChanged
+
+    private void numberTicketsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_numberTicketsStateChanged
+        
+    }//GEN-LAST:event_numberTicketsStateChanged
+
+    private void comboSponsorsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboSponsorsItemStateChanged
+
+    }//GEN-LAST:event_comboSponsorsItemStateChanged
+
+    private void btnGetTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetTotalActionPerformed
+        String location = comboLocations.getSelectedItem().toString();
+        String sponsor = comboSponsors.getSelectedItem().toString();
+        
+        if (ticketManager.getTicketID(sponsor, location) != -1) {
+            currentTicketID = ticketManager.getTicketID(sponsor, location);
+            ticketManager.purchaseTicket(currentTicketID, ABORT);
+            updatePrice();
+        } else {
+            lblError.setVisible(true);
+        }
+
+    }//GEN-LAST:event_btnGetTotalActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -251,17 +387,19 @@ public class GetTicket extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Start;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JButton btnConfirm;
+    private javax.swing.JButton btnGetTotal;
+    private javax.swing.JComboBox<String> comboLocations;
+    private javax.swing.JComboBox<String> comboSponsors;
+    private javax.swing.JComboBox<String> comboUsers;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
@@ -276,6 +414,8 @@ public class GetTicket extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lblError;
+    private javax.swing.JLabel lblTotal;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JSpinner numberTickets;
     // End of variables declaration//GEN-END:variables
