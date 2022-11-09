@@ -37,12 +37,12 @@ public class Report2 extends javax.swing.JDialog {
         HashMap<Integer, HashMap> reporte = userManager.getReport2(Integer.parseInt( comboUsers.getSelectedItem().toString() ));
         Object[] fill = new Object[6];
         for (Object key : reporte.keySet() ) {
-            fill[0] = key;
+            fill[0] = reporte.get(key).get("userID");
             fill[1] = reporte.get(key).get("userName");
-            fill[1] = reporte.get(key).get("location");
-            fill[1] = reporte.get(key).get("sponsor");
-            fill[1] = reporte.get(key).get("numberTickets");
-            fill[1] = reporte.get(key).get("total");
+            fill[2] = reporte.get(key).get("location");
+            fill[3] = reporte.get(key).get("sponsor");
+            fill[4] = reporte.get(key).get("numberTickets");
+            fill[5] = reporte.get(key).get("total");
             model.addRow(fill);
         }
     }
@@ -116,7 +116,7 @@ public class Report2 extends javax.swing.JDialog {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, true, true, true, true
@@ -259,6 +259,7 @@ public class Report2 extends javax.swing.JDialog {
         int userID = Integer.parseInt(comboUsers.getSelectedItem().toString());
         if (userManager.doesUserExist(userID)) {
             lblError.setVisible(false);
+            fillTable();
         } else {
             lblError.setVisible(true);
         }

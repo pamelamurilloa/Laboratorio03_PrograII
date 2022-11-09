@@ -1,6 +1,7 @@
 package Bussiness;
 
 import Data.DBManager;
+import Objects.Invoice;
 import Objects.Ticket;
 import java.util.ArrayList;
 
@@ -49,8 +50,9 @@ public class TicketManager {
         return dbManager.getTicketID(sponsor, location);
     }
     
-    public void purchaseTicket(int id, int amount) {
+    public void purchaseTicket(int id, int amount, int userID, int total) {
         dbManager.updateStockTickets(amount, id);
+        dbManager.insertInvoice(new Invoice(id, userID, amount, total));
     }
     
     

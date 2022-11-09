@@ -1,5 +1,6 @@
 package Data;
 
+import Objects.Invoice;
 import Objects.Ticket;
 import Objects.User;
 import java.sql.Statement;
@@ -24,7 +25,7 @@ public class DBManager {
         try {
             connection = conexion.conexion();
             s = connection.createStatement();
-            s.executeQuery("SELECT Count(1) cantidad from usuarios u where u.id_usuario = '" + userID + "';");
+            rs = s.executeQuery("SELECT Count(1) cantidad from usuarios u where u.id_usuario = '" + userID + "';");
             while (rs.next()) {
                 exist = true;
             }
@@ -168,15 +169,18 @@ public class DBManager {
                                 + "LEFT JOIN patrocinadores pa on b.id_patrocinador = pa.id_patrocinador "
                                 + "WHERE u.id_usuario = '" + userID + "' "
                                 + "GROUP BY u.id_usuario, u.primer_nombre, l.nombre, pa.nombre, f.cantidad, f.total;");
+            int count = 0;
             while (rs.next()) {
                 HashMap subHash = new HashMap();
+                subHash.put("userID", userID);
                 subHash.put("userName", rs.getString("nombre"));
                 subHash.put("location", rs.getString("localidad"));
                 subHash.put("sponsor", rs.getString("patrocinador"));
                 subHash.put("numberTickets", rs.getInt("cantidad"));
                 subHash.put("total", rs.getInt("total"));
                 
-                mainHash.put( userID, subHash);
+                mainHash.put( count, subHash);
+                count++;
             }
 
         } catch (Exception e) {
@@ -259,6 +263,26 @@ public class DBManager {
             System.out.println(e);
         }
         return ticketID;
+    }
+    
+    // BILLS //
+    
+    public void insertInvoice(Invoice invoice) {
+        try {
+            connection = conexion.conexion();
+            s = connection.createStatement();
+            int userInserted = s.executeUpdate("INSERT INTO facturas (id_boleto, id_usuario, cantidad, total) VALUES "
+                    + "('" + invoice.getTicketID() + "', "
+                    + "'" + invoice.getUserID() + "', "
+                    + "'" + invoice.getQuantity() + "', "
+                    + "'" + invoice.getTotal() + "';");
+            
+            if (userInserted == 0) {
+                System.out.println("Error al insertar factura");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
     
     

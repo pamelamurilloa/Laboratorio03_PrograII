@@ -78,7 +78,7 @@ public class GetTicket extends javax.swing.JDialog {
     }
     
     private void confirmPurchase(){
-        ticketManager.purchaseTicket(currentTicketID, Integer.parseInt( numberTickets.getModel().getValue().toString() ) );
+        ticketManager.purchaseTicket(currentTicketID, Integer.parseInt( numberTickets.getModel().getValue().toString() ), currentTicketID, Integer.parseInt(lblTotal.getText()));
     }
 
     /**
