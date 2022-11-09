@@ -29,7 +29,7 @@ public class GetTicket extends javax.swing.JDialog {
         restart();
     }
 
-    public void fillComboBox(JComboBox comboToFill, ArrayList<String> filling) {
+    private void fillComboBox(JComboBox comboToFill, ArrayList<String> filling) {
         for (String line : filling) {
             comboToFill.addItem(line);
         }

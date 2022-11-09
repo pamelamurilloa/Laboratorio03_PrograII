@@ -156,7 +156,7 @@ public class DBManager {
         return count;
     }
     
-    public HashMap<Integer, HashMap> getReport2 (char gender) {
+    public HashMap<Integer, HashMap> getReport2 (int userID) {
         HashMap<Integer, HashMap> mainHash = new HashMap();
         try {
             connection = conexion.conexion();
@@ -166,7 +166,7 @@ public class DBManager {
                                 + "LEFT JOIN boletos b on b.id_tipo_boleto = f.id_boleto "
                                 + "LEFT JOIN localidades l on b.id_localidad = l.id_localidad "
                                 + "LEFT JOIN patrocinadores pa on b.id_patrocinador = pa.id_patrocinador "
-                                + "WHERE u.id_usuario = '" + gender + "' "
+                                + "WHERE u.id_usuario = '" + userID + "' "
                                 + "GROUP BY u.id_usuario, u.primer_nombre, l.nombre, pa.nombre, f.cantidad, f.total;");
             while (rs.next()) {
                 HashMap subHash = new HashMap();
@@ -174,9 +174,9 @@ public class DBManager {
                 subHash.put("location", rs.getString("localidad"));
                 subHash.put("sponsor", rs.getString("patrocinador"));
                 subHash.put("numberTickets", rs.getInt("cantidad"));
-                subHash.put("numberTickets", rs.getInt("total"));
+                subHash.put("total", rs.getInt("total"));
                 
-                mainHash.put( rs.getInt("id_usuario"), subHash);
+                mainHash.put( userID, subHash);
             }
 
         } catch (Exception e) {

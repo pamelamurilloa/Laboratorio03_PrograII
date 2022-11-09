@@ -22,7 +22,7 @@ public class Report1 extends javax.swing.JDialog {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         HashMap reporte = userManager.getGenderCount();
-        Object[] fill = new Object[4];
+        Object[] fill = new Object[2];
         for (Object key : reporte.keySet() ) {
             fill[0] = key;
             fill[1] = reporte.get(key);

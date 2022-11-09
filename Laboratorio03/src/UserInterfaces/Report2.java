@@ -1,23 +1,50 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package UserInterfaces;
 
-/**
- *
- * @author pamelamurillo
- */
+import Bussiness.UserManager;
+import java.util.ArrayList;
+import java.util.HashMap;
+import javax.swing.JComboBox;
+import javax.swing.table.DefaultTableModel;
+
+
 public class Report2 extends javax.swing.JDialog {
 
-    /**
-     * Creates new form Report2
-     */
+    UserManager userManager = new UserManager();
+
     public Report2(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         setResizable(false);
+        
+        initialSetUp();
+    }
+    
+    private void fillComboBox(JComboBox comboToFill, ArrayList<String> filling) {
+        for (String line : filling) {
+            comboToFill.addItem(line);
+        }
+    }
+    
+    private void initialSetUp() {
+        fillComboBox(comboUsers, userManager.getUserList());
+        lblError.setVisible(false);
+    }
+    
+    public void fillTable() {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+        HashMap<Integer, HashMap> reporte = userManager.getReport2(Integer.parseInt( comboUsers.getSelectedItem().toString() ));
+        Object[] fill = new Object[6];
+        for (Object key : reporte.keySet() ) {
+            fill[0] = key;
+            fill[1] = reporte.get(key).get("userName");
+            fill[1] = reporte.get(key).get("location");
+            fill[1] = reporte.get(key).get("sponsor");
+            fill[1] = reporte.get(key).get("numberTickets");
+            fill[1] = reporte.get(key).get("total");
+            model.addRow(fill);
+        }
     }
 
     /**
@@ -29,11 +56,213 @@ public class Report2 extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel3 = new javax.swing.JPanel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        table = new javax.swing.JTable();
+        comboUsers = new javax.swing.JComboBox<>();
+        lblError = new javax.swing.JLabel();
+        btnConfirm = new javax.swing.JButton();
+        jLabel15 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        menuBar = new javax.swing.JMenuBar();
+        Start = new javax.swing.JMenu();
+        menuGetTicket = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        menuReport1 = new javax.swing.JMenuItem();
+        menuReport2 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        menuCRUDuser = new javax.swing.JMenuItem();
+        menuCRUDticket = new javax.swing.JMenuItem();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel3.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 280, 10));
+
+        jPanel1.setBackground(new java.awt.Color(240, 240, 240));
+        jPanel1.setForeground(new java.awt.Color(240, 240, 240));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel7.setFont(new java.awt.Font("Hiragino Mincho ProN", 1, 24)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("Reporte 1");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 220, 30));
+
+        jPanel3.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, 80));
+
+        table.setBackground(new java.awt.Color(240, 240, 240));
+        table.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
+        table.setForeground(new java.awt.Color(0, 0, 0));
+        table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Cédula", "Nombre", "Localidad", "Patrocinador", "Cantidad de entradas", "Total"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, true, true, true, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(table);
+
+        jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, 810, 310));
+
+        comboUsers.setFont(new java.awt.Font("Hiragino Sans", 0, 18)); // NOI18N
+        jPanel3.add(comboUsers, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 10, 210, 40));
+
+        lblError.setFont(new java.awt.Font("Hiragino Sans", 1, 18)); // NOI18N
+        lblError.setForeground(new java.awt.Color(204, 0, 0));
+        lblError.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblError.setText("El usuario no tiene compras");
+        jPanel3.add(lblError, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 80, 310, 30));
+
+        btnConfirm.setFont(new java.awt.Font("Hiragino Sans", 1, 24)); // NOI18N
+        btnConfirm.setText("Confirmar");
+        btnConfirm.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        btnConfirm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfirmActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnConfirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 60, 170, 60));
+
+        jLabel15.setFont(new java.awt.Font("Hiragino Sans", 1, 18)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel15.setText("Seleccione el numero de cedula");
+        jPanel3.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 20, 310, 30));
+
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 900, 460));
+
+        jPanel4.setBackground(new java.awt.Color(0, 148, 148));
+        jPanel4.setForeground(new java.awt.Color(0, 51, 51));
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel2.setFont(new java.awt.Font("Impact", 1, 48)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(245, 245, 245));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("TICKET");
+        jPanel4.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 0, 150, 60));
+
+        jLabel4.setFont(new java.awt.Font("Hiragino Mincho ProN", 1, 24)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(245, 245, 245));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("now");
+        jPanel4.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 20, 50, 30));
+
+        jLabel5.setFont(new java.awt.Font("Hiragino Mincho ProN", 1, 24)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(245, 245, 245));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("my");
+        jPanel4.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 50, 30));
+
+        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 60));
+
+        jPanel2.setBackground(new java.awt.Color(0, 181, 181));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel3.setFont(new java.awt.Font("Kefa", 0, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel3.setText("Pamela Murillo Anchia");
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 10, 160, 40));
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 520, 900, 60));
+
+        Start.setText("Inicio");
+
+        menuGetTicket.setText("Comprar entradas");
+        Start.add(menuGetTicket);
+
+        menuBar.add(Start);
+
+        jMenu1.setText("Reportes");
+
+        menuReport1.setText("Reporte 1");
+        menuReport1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuReport1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuReport1);
+
+        menuReport2.setText("Reporte 2");
+        jMenu1.add(menuReport2);
+
+        menuBar.add(jMenu1);
+
+        jMenu2.setText("CRUD");
+
+        menuCRUDuser.setText("De Usuarios");
+        menuCRUDuser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCRUDuserActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuCRUDuser);
+
+        menuCRUDticket.setText("De Boletos");
+        menuCRUDticket.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCRUDticketActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuCRUDticket);
+
+        menuBar.add(jMenu2);
+
+        setJMenuBar(menuBar);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void menuReport1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuReport1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuReport1ActionPerformed
+
+    private void menuCRUDuserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCRUDuserActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuCRUDuserActionPerformed
+
+    private void menuCRUDticketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCRUDticketActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuCRUDticketActionPerformed
+
+    private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
+        int userID = Integer.parseInt(comboUsers.getSelectedItem().toString());
+        if (userManager.doesUserExist(userID)) {
+            lblError.setVisible(false);
+        } else {
+            lblError.setVisible(true);
+        }
+    }//GEN-LAST:event_btnConfirmActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +307,30 @@ public class Report2 extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu Start;
+    private javax.swing.JButton btnConfirm;
+    private javax.swing.JComboBox<String> comboUsers;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lblError;
+    private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenuItem menuCRUDticket;
+    private javax.swing.JMenuItem menuCRUDuser;
+    private javax.swing.JMenuItem menuGetTicket;
+    private javax.swing.JMenuItem menuReport1;
+    private javax.swing.JMenuItem menuReport2;
+    private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 }
